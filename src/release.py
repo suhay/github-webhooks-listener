@@ -3,7 +3,7 @@ import subprocess
 
 
 async def processRelease(repo, payload):
-    with open('sites/' + repo + '.json') as f:
+    with open('../sites/' + repo + '.json') as f:
       data = json.load(f)
 
     if 'release' in data.keys() and 'path' in data.keys():
