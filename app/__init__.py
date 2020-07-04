@@ -3,7 +3,7 @@ from quart import Quart, request
 from dotenv import load_dotenv
 load_dotenv()
 
-from release import processRelease
+from app import release
 
 import os
 import hashlib
@@ -27,7 +27,7 @@ async def webhooks(repo):
 
         if payload['repository']['name'] == repo:
           if payload['action'] == 'released' and 'release' in payload.keys():
-            asyncio.ensure_future(processRelease(repo, payload))
+            asyncio.ensure_future(release.processRelease(repo, payload))
 
         return 'Thanks!', 202
 

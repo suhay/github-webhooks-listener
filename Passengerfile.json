@@ -4,5 +4,6 @@
   "environment": "production",
   "port": 5000,
   "daemonize": true,
-  "user": "ubuntu"
+  "user": "ubuntu",
+  "python": "python3"
 }
