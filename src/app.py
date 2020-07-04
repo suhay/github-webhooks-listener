@@ -41,4 +41,5 @@ async def webhooks(repo):
 def page_not_found(e):
     return "?", 404
 
-app.run()
+if __name__ == "__main__":
+    app.run()
