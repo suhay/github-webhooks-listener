@@ -4,7 +4,8 @@ from pathlib import Path
 
 def processRelease(repo, payload):
     base_path = Path(__file__).parent
-    file_path = (base_path / '..' / 'sites' / repo + '.json').resolve()
+    file_name = repo + '.json'
+    file_path = (base_path / '..' / 'sites' / file_name).resolve()
 
     with open(file_path) as f:
       data = json.load(f)
