@@ -1,9 +1,12 @@
 import json
 import subprocess
-
+from pathlib import Path
 
 def processRelease(repo, payload):
-    with open('../sites/' + repo + '.json') as f:
+    base_path = Path(__file__).parent
+    file_path = (base_path / '..' / 'sites' / repo + '.json').resolve()
+
+    with open(file_path) as f:
       data = json.load(f)
 
     if 'release' in data.keys() and 'path' in data.keys():
