@@ -25,7 +25,7 @@ async def webhooks(repo):
       if 'X-Hub-Signature' in request.headers.keys() and hmac.compare_digest(signature, request.headers['X-Hub-Signature'].split('=')[1]):
         payload = await request.get_json()
 
-        if payload['repository']['name'] == repo:
+        if payload['repository']['name'] == repo and 'action' in payload.keys():
           if payload['action'] == 'released' and 'release' in payload.keys():
             asyncio.ensure_future(processRelease(repo, payload))
 
