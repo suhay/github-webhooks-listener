@@ -2,7 +2,7 @@ import json
 import subprocess
 
 
-async def processRelease(repo, payload):
+def processRelease(repo, payload):
     with open('../sites/' + repo + '.json') as f:
       data = json.load(f)
 
