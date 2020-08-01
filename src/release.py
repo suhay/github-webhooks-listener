@@ -21,6 +21,7 @@ def processRelease(repo, payload):
 
       subprocess.check_call(['git', 'fetch', '--all', '--tags'], cwd=data['path'])
       subprocess.check_call(['git', 'checkout', 'tags/' + payload['release']['tag_name']], cwd=data['path'])
+      print('command: ' + ' && '.join(commands))
       subprocess.Popen(' && '.join(commands), cwd=data['path'], executable='/bin/bash', shell=True)
 
     return
