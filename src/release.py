@@ -1,6 +1,10 @@
 import json
 import subprocess
+import os.path
+
+from os import path
 from pathlib import Path
+
 
 async def processRelease(repo, payload):
     base_path = Path(__file__).parent
@@ -11,7 +15,11 @@ async def processRelease(repo, payload):
       data = json.load(f)
 
     if 'release' in data.keys() and 'path' in data.keys():
-      commands = ['. ~/.nvm/nvm.sh', 'nvm use']
+      commands = []
+
+      if path.exists(base_path / '..' / '.nvmrc'):
+        commands.append('. ~/.nvm/nvm.sh')
+        commands.append('nvm use')
       
       if 'build' in data['release'].keys():
         commands.append(data['release']['build'])
