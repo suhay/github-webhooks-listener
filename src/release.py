@@ -1,8 +1,6 @@
 import json
 import subprocess
 import os.path
-import rq.timeouts.JobTimeoutException
-import logging
 
 from os import path
 from pathlib import Path
