@@ -28,6 +28,7 @@ async def webhooks(repo):
         if payload['repository']['name'] == repo and 'action' in payload.keys():
           if payload['action'] == 'released' and 'release' in payload.keys():
             p = Process(target=processRelease, args=(repo,payload))
+            print(p.pid)
             p.start()
 
         return 'Thanks!', 202
