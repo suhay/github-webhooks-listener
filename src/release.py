@@ -6,7 +6,7 @@ from os import path
 from pathlib import Path
 
 
-async def processRelease(repo, payload):
+def processRelease(repo, payload):
     base_path = Path(__file__).parent
     file_name = repo + '.json'
     file_path = (base_path / '..' / 'sites' / file_name).resolve()

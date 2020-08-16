@@ -4,11 +4,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from release import processRelease
+from multiprocessing import Process
 
 import os
 import hashlib
 import hmac
-import asyncio
 
 
 token = os.environ.get("API_TOKEN")
@@ -27,7 +27,8 @@ async def webhooks(repo):
 
         if payload['repository']['name'] == repo and 'action' in payload.keys():
           if payload['action'] == 'released' and 'release' in payload.keys():
-            asyncio.create_task(processRelease(repo, payload))
+            p = Process(target=processRelease, args=(repo,payload))
+            p.start()
 
         return 'Thanks!', 202
 
