@@ -32,9 +32,9 @@ def processRelease(repo, payload):
 
       with subprocess.Popen(' && '.join(commands), cwd=data['path'], executable='/bin/bash', shell=True) as process:
         try:
-          process.communicate(timeout=120)
+          process.communicate(timeout=300)
         except subprocess.TimeoutExpired:
-          print('Process was killed by timeout: 120 seconds.')
+          print('Process was killed by timeout: 300 seconds.')
           raise
         finally:
           if process.poll() is None:
