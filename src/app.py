@@ -20,20 +20,19 @@ app = Quart(__name__)
 async def webhooks(repo):
     if request.is_json:
       data = await request.data
-      # signature = hmac.new(tokenb, data, hashlib.sha1).hexdigest()
+      signature = hmac.new(tokenb, data, hashlib.sha1).hexdigest()
 
-      # if 'X-Hub-Signature' in request.headers.keys() and hmac.compare_digest(signature, request.headers['X-Hub-Signature'].split('=')[1]):
-      payload = await request.get_json()
+      if 'X-Hub-Signature' in request.headers.keys() and hmac.compare_digest(signature, request.headers['X-Hub-Signature'].split('=')[1]):
+        payload = await request.get_json()
 
-      if payload['repository']['name'] == repo and 'action' in payload.keys():
-        if payload['action'] == 'released' and 'release' in payload.keys():
-          # asyncio.ensure_future(processRelease(repo, payload))
-          processRelease(repo, payload)
+        if payload['repository']['name'] == repo and 'action' in payload.keys():
+          if payload['action'] == 'released' and 'release' in payload.keys():
+            asyncio.ensure_future(processRelease(repo, payload))
 
-      return 'Thanks!', 202
+        return 'Thanks!', 202
 
-      # else:
-       # return 'Signature is wrong...', 401
+      else:
+        return 'Signature is wrong...', 401
 
     else:
       return 'Not sure what this is...', 418

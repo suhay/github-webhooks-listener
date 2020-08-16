@@ -8,7 +8,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name="github-webhooks-listener",
-    version="0.1.0",
+    version="0.1.1",
     author="Matt Suhay",
     author_email="matt@suhay.dev",
     description="A simple listener that will trigger custom scripts when it receives events from GitHub.",

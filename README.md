@@ -48,3 +48,33 @@ or
 `https://yoursite.com/webhooks/my-site`
 
 The `repo` name must match the repository name (minus the user/org name) sent from GitHub and also the respective `.json` file that contains its custom scripts.
+
+### Deploying with Hypercorn
+
+```bash
+$ sudo nano /etc/systemd/system/github-webhooks-listener.service
+```
+
+```bash
+[Unit]
+Description=GitHub Webhooks Listener
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=ubuntu
+ExecStart=/home/ubuntu/.local/bin/hypercorn /mnt/projects/github-webhooks-listener/src/app --bind 127.0.0.1:5000
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Within your Apache2 `.conf`
+
+```bash
+ProxyPass /webhooks http://localhost:5000/webhooks
+ProxyPassReverse /webhooks https://localhost:5000/webhooks
+```
