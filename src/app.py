@@ -27,7 +27,7 @@ async def webhooks(repo):
 
         if payload['repository']['name'] == repo and 'action' in payload.keys():
           if payload['action'] == 'released' and 'release' in payload.keys():
-            asyncio.ensure_future(processRelease(repo, payload))
+            asyncio.shield(processRelease(repo, payload))
 
         return 'Thanks!', 202
 
