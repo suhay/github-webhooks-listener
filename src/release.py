@@ -1,6 +1,8 @@
 import json
 import subprocess
 import os.path
+import rq.timeouts.JobTimeoutException
+import logging
 
 from os import path
 from pathlib import Path
@@ -29,6 +31,16 @@ async def processRelease(repo, payload):
 
       subprocess.check_call(['git', 'fetch', '--all', '--tags'], cwd=data['path'])
       subprocess.check_call(['git', 'checkout', 'tags/' + payload['release']['tag_name']], cwd=data['path'])
-      subprocess.Popen(' && '.join(commands), cwd=data['path'], executable='/bin/bash', shell=True)
+
+      with subprocess.Popen(' && '.join(commands), cwd=data['path'], executable='/bin/bash', shell=True) as process:
+        try:
+          process.communicate(timeout=120)
+        except subprocess.TimeoutExpired:
+          print('Process was killed by timeout: 120 seconds.')
+          raise
+        finally:
+          if process.poll() is None:
+            process.kill()
+            process.communicate()
 
     return
