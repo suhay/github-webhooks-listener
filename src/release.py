@@ -16,16 +16,24 @@ def processRelease(repo, payload):
 
     if 'release' in data.keys() and 'path' in data.keys():
       commands = []
+      
+      cwd = data['cwd']
 
       if path.exists(base_path / '..' / '.nvmrc'):
-        commands.append('. ~/.nvm/nvm.sh')
+        commands.append('. ' + (cwd / '.nvm' / 'nvm.sh').resolve())
         commands.append('nvm use')
-      
+      elif 'node' in data.keys():
+        commands.append('. ' + (cwd / '.nvm' / 'nvm.sh').resolve())
+        commands.append('nvm use ' + data['node'])
+
       if 'build' in data['release'].keys():
         commands.append(data['release']['build'])
 
       if 'deploy' in data['release'].keys():
         commands.append(data['release']['deploy'])
+
+      if 'cleanup' in data['release'].keys():
+        commands.append(data['release']['cleanup'])
 
       subprocess.check_call(['git', 'fetch', '--all', '--tags'], cwd=data['path'])
       subprocess.check_call(['git', 'checkout', 'tags/' + payload['release']['tag_name']], cwd=data['path'])
