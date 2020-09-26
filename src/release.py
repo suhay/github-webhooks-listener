@@ -20,10 +20,10 @@ def processRelease(repo, payload):
       cwd = data['cwd']
 
       if path.exists(base_path / '..' / '.nvmrc'):
-        commands.append('. ' + (cwd / '.nvm' / 'nvm.sh').resolve())
+        commands.append('. ' + cwd + '/.nvm/nvm.sh')
         commands.append('nvm use')
       elif 'node' in data.keys():
-        commands.append('. ' + (cwd / '.nvm' / 'nvm.sh').resolve())
+        commands.append('. ' + cwd + '/.nvm/nvm.sh')
         commands.append('nvm use ' + data['node'])
 
       if 'build' in data['release'].keys():
