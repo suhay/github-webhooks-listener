@@ -27,13 +27,15 @@ API_TOKEN=YOUR_GITHUB_SECRET
     └── my-site.json
 ```
 
-```json
+```js
 my-site.json
 
 {
-  "path": "/home/code/my-site",
+  "path": "/home/code/my-site", // path where repository lives
+  "cwd": "/home/user", // user path for nvm
+  "node": "v12.7.0", // nvm node version to use, if .nvmrc is no supplied
   "release": {
-    "build": "yarn && yarn build && tar -xvf {{release.sha}}.tar.gz", # you may use handlebar notation to inject GitHub payload values into your steps
+    "build": "yarn && yarn build && tar -xvf {{release.sha}}.tar.gz", // you may use handlebar notation to inject GitHub payload values into your steps
     "deploy": "rsync -av --delete public/ /var/www/html/my-site",
     "cleanup": "rm -rf node_modules/ && rm -rf .cache/ && yarn cache clean"
   }
