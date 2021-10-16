@@ -8,7 +8,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name="github-webhooks-listener",
-    version="0.2.0",
+    version="0.2.1",
     author="Matt Suhay",
     author_email="matt@suhay.dev",
     description="A simple listener that will trigger custom scripts when it receives events from GitHub.",
@@ -26,7 +26,8 @@ setup(
     ],
     install_requires=[
         'quart',
-        'python-dotenv'
+        'python-dotenv',
+        'pybars3'
     ],
     python_requires='>=3.8',
 )

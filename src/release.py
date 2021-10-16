@@ -4,7 +4,9 @@ import os.path
 
 from os import path
 from pathlib import Path
+from pybars import Compiler
 
+compiler = Compiler()
 
 def processRelease(repo, payload):
     base_path = Path(__file__).parent
@@ -27,13 +29,19 @@ def processRelease(repo, payload):
         commands.append('nvm use ' + data['node'])
 
       if 'build' in data['release'].keys():
-        commands.append(data['release']['build'])
+        source = data['release']['build']
+        template = compiler.compile(source)
+        commands.append(template(payload))
 
       if 'deploy' in data['release'].keys():
-        commands.append(data['release']['deploy'])
+        source = data['release']['deploy']
+        template = compiler.compile(source)
+        commands.append(template(payload))
 
       if 'cleanup' in data['release'].keys():
-        commands.append(data['release']['cleanup'])
+        source = data['release']['cleanup']
+        template = compiler.compile(source)
+        commands.append(template(payload))
 
       subprocess.check_call(['git', 'fetch', '--all', '--tags'], cwd=data['path'])
       subprocess.check_call(['git', 'checkout', 'tags/' + payload['release']['tag_name']], cwd=data['path'])
@@ -48,10 +56,12 @@ def processRelease(repo, payload):
             if line:
               print(line.rstrip())
         except subprocess.TimeoutExpired:
-          print('Process was killed by timeout: 300 seconds.')
+          print('Process was killed by timeout: 300 seconds')
           raise
         finally:
+          print('Process complete')
           process.kill()
           process.communicate()
+          print('Release complete!')
 
     return

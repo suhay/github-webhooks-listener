@@ -27,15 +27,15 @@ API_TOKEN=YOUR_GITHUB_SECRET
     └── my-site.json
 ```
 
-```json
+```js
 my-site.json
 
 {
-  "path": "/home/code/my-site", # path where repository lives
-  "cwd": "/home/user", # user path for nvm
-  "node": "v12.7.0", # nvm node version to use, if .nvmrc is no supplied
+  "path": "/home/code/my-site", // path where repository lives
+  "cwd": "/home/user", // user path for nvm
+  "node": "v12.7.0", // nvm node version to use, if .nvmrc is no supplied
   "release": {
-    "build": "yarn && yarn build",
+    "build": "yarn && yarn build && tar -xvf {{release.sha}}.tar.gz", // you may use handlebar notation to inject GitHub payload values into your steps
     "deploy": "rsync -av --delete public/ /var/www/html/my-site",
     "cleanup": "rm -rf node_modules/ && rm -rf .cache/ && yarn cache clean"
   }
@@ -44,7 +44,9 @@ my-site.json
 
 ### Adding listener to GitHub Webhooks
 
-As of `v0.2.0` - Only the `release` event is supported.
+` - Only the `release` event is supported.
+=======
+As of `v0.2.1` - Only the `release` event is supported.
 
 `https://{domain}/webhooks/{repo}`  
 or  
