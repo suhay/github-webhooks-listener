@@ -44,6 +44,8 @@ my-site.json
 
 ### Adding listener to GitHub Webhooks
 
+` - Only the `release` event is supported.
+=======
 As of `v0.2.1` - Only the `release` event is supported.
 
 `https://{domain}/webhooks/{repo}`  
