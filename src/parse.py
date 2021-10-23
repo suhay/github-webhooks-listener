@@ -1,5 +1,6 @@
 from multiprocessing import Process
 from release import processRelease
+import sys
 
 
 async def parse(repo, payload):
@@ -9,3 +10,13 @@ async def parse(repo, payload):
                         args=(repo, payload))
             print(p.pid)
             p.start()
+
+if __name__ == "__main__":
+    if len(sys.argv) == 3:
+        repo = sys.argv[1]
+        payload = sys.argv[2]
+        parse(repo, payload)
+    elif len(sys.argv) == 2:
+        repo = sys.argv[0]
+        payload = sys.argv[1]
+        parse(repo, payload)

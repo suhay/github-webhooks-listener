@@ -1,33 +1,22 @@
 import json
 import subprocess
 
-from os import path
-from pathlib import Path
+from os import environ
 from pybars import Compiler
 
 compiler = Compiler()
 
 
 def processRelease(repo, payload):
-    base_path = Path(__file__).parent
+    base_path = environ.get("SITES")
     file_name = repo + '.json'
-    file_path = (base_path / '..' / 'sites' / file_name).resolve()
+    file_path = (base_path / file_name).resolve()
 
     with open(file_path) as f:
         data = json.load(f)
 
     if 'release' in data.keys() and 'path' in data.keys():
         commands = []
-
-        cwd = data['cwd']
-
-        if path.exists(base_path / '..' / '.nvmrc'):
-            commands.append('. ' + cwd + '/.nvm/nvm.sh')
-            commands.append('nvm use')
-        elif 'node' in data.keys():
-            commands.append('. ' + cwd + '/.nvm/nvm.sh')
-            commands.append('nvm use ' + data['node'])
-
         if 'build' in data['release'].keys():
             source = data['release']['build']
             template = compiler.compile(source)

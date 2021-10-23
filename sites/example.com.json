@@ -1,0 +1,6 @@
+{
+  "path": "/home/projects/example.com",
+  "release": {
+    "deploy": "rsync -ai --delete --exclude='.git/' --exclude='.gitignore' /home/projects/example.com/ /www/html/example.com/"
+  }
+}

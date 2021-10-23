@@ -1,7 +1,8 @@
 from auth import auth
 from parse import parse
 from quart import Quart, request
-
+from dotenv import load_dotenv
+load_dotenv()
 
 app = Quart(__name__)
 
