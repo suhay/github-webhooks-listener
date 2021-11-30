@@ -1,6 +1,8 @@
+import asyncio
 from multiprocessing import Process
 from release import processRelease
 import sys
+import json
 
 
 async def parse(repo, payload):
@@ -15,8 +17,8 @@ if __name__ == "__main__":
     if len(sys.argv) == 3:
         repo = sys.argv[1]
         payload = sys.argv[2]
-        parse(repo, payload)
+        asyncio.run(parse(repo, json.loads(payload)))
     elif len(sys.argv) == 2:
         repo = sys.argv[0]
         payload = sys.argv[1]
-        parse(repo, payload)
+        asyncio.run(parse(repo, json.loads(payload)))

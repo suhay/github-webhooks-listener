@@ -12,7 +12,7 @@ async def webhooks(repo):
     if request.is_json:
         if 'X-Hub-Signature-256' in request.headers.keys():
             data = await request.data
-            header = request.headers['X-Hub-Signature-256'].split('=')[1]
+            header = request.headers['X-Hub-Signature-256']
             if auth(header, data):
                 payload = await request.get_json()
                 parse(repo, payload)

@@ -1,16 +1,15 @@
 import json
 import subprocess
-
-from os import environ
+import os
 from pybars import Compiler
 
 compiler = Compiler()
 
 
 def processRelease(repo, payload):
-    base_path = environ.get("SITES")
+    base_path = os.environ.get("SITES")
     file_name = repo + '.json'
-    file_path = (base_path / file_name).resolve()
+    file_path = base_path + '/' + file_name
 
     with open(file_path) as f:
         data = json.load(f)
@@ -38,13 +37,13 @@ def processRelease(repo, payload):
             ['git', 'checkout', 'tags/' + payload['release']['tag_name']], cwd=data['path'])
 
         with subprocess.Popen(' && '.join(commands), cwd=data['path'], executable='/bin/bash', shell=True) as process:
+            print('Runing process: ' + process.pid)
             try:
                 process.communicate(timeout=300)
             except subprocess.TimeoutExpired:
                 print('Process was killed by timeout: 300 seconds')
                 raise
             finally:
-                print('Process complete')
                 process.kill()
                 process.communicate()
                 print('Release complete!')
